@@ -29,7 +29,15 @@ class PatientInfoViewSet(viewsets.ModelViewSet):
     """
     queryset = PatientInfoModel.objects.all()
     serializer_class = PatientInfoSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def perform_destroy(self, instance):
+        instance.delete()
 
 class DoctorInfoViewSet(viewsets.ModelViewSet):
     """
@@ -37,4 +45,4 @@ class DoctorInfoViewSet(viewsets.ModelViewSet):
     """
     queryset = DoctorInfoModel.objects.all()
     serializer_class = DoctorInfoSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
